@@ -21,11 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from boto.connection import AWSQueryConnection
+
+from boto.aws_connection import AWSQueryConnection
+
 from boto.provider import Provider, NO_CREDENTIALS_PROVIDED
 from boto.regioninfo import RegionInfo
-from boto.sts.credentials import Credentials, FederationToken, AssumedRole
+from boto.sts.credentials import Credentials, FederationToken
 from boto.sts.credentials import DecodeAuthorizationMessage
+from boto.credentials import AssumedRole
 import boto
 import boto.utils
 import datetime

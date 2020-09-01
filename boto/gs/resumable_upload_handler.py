@@ -28,7 +28,7 @@ import time
 import urlparse
 from hashlib import md5
 from boto import config, UserAgent
-from boto.connection import AWSAuthConnection
+from boto.aws_connection import AWSAuthConnection
 from boto.exception import InvalidUriError
 from boto.exception import ResumableTransferDisposition
 from boto.exception import ResumableUploadException

@@ -23,7 +23,7 @@
 import xml.sax
 import time
 import boto
-from boto.connection import AWSAuthConnection
+from boto.aws_connection import AWSAuthConnection
 from boto import handler
 from boto.cloudfront.distribution import Distribution, DistributionSummary, DistributionConfig
 from boto.cloudfront.distribution import StreamingDistribution, StreamingDistributionSummary, StreamingDistributionConfig

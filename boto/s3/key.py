@@ -31,6 +31,7 @@ import binascii
 import math
 from hashlib import md5
 import boto.utils
+import boto.provider_util
 from boto.compat import BytesIO, six, urllib, encodebytes
 
 from boto.exception import BotoClientError
@@ -302,7 +303,7 @@ class Key(object):
                 raise provider.storage_response_error(self.resp.status,
                                                       self.resp.reason, body)
             response_headers = self.resp.msg
-            self.metadata = boto.utils.get_aws_metadata(response_headers,
+            self.metadata = boto.provider_utils.get_aws_metadata(response_headers,
                                                         provider)
             for name, value in response_headers.items():
                 # To get correct size for Range GETs, use Content-Range
@@ -696,7 +697,7 @@ class Key(object):
                 headers[provider.storage_class_header] = self.storage_class
         if encrypt_key:
             headers[provider.server_side_encryption_header] = 'AES256'
-        headers = boto.utils.merge_meta(headers, self.metadata, provider)
+        headers = boto.provider_util.merge_meta(headers, self.metadata, provider)
 
         return self.bucket.connection.generate_url(expires_in, method,
                                                    self.bucket.name, self.name,
@@ -941,7 +942,7 @@ class Key(object):
                 kwargs['size'] = size
             headers['_sha256'] = compute_hash(**kwargs)[0]
         headers['Expect'] = '100-Continue'
-        headers = boto.utils.merge_meta(headers, self.metadata, provider)
+        headers = boto.provider_util.merge_meta(headers, self.metadata, provider)
         resp = self.bucket.connection.make_request(
             'PUT',
             self.bucket.name,

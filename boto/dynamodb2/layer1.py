@@ -23,7 +23,7 @@ from binascii import crc32
 
 import boto
 from boto.compat import json
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.regioninfo import RegionInfo
 from boto.exception import JSONResponseError
 from boto.dynamodb2 import exceptions

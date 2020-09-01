@@ -23,7 +23,7 @@
 
 import boto
 import boto.jsonresponse
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.regioninfo import RegionInfo
 
 #boto.set_stream_logger('cloudsearch')

@@ -21,7 +21,7 @@
 #
 
 import boto
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.regioninfo import RegionInfo
 from boto.exception import JSONResponseError
 from boto.directconnect import exceptions

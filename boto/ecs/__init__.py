@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 
 import boto
-from boto.connection import AWSQueryConnection, AWSAuthConnection
+from boto.aws_connection import AWSQueryConnection, AWSAuthConnection
 from boto.exception import BotoServerError
 import time
 import urllib
