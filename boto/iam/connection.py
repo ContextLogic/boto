@@ -24,7 +24,7 @@ import boto.jsonresponse
 from boto.compat import json, six
 from boto.resultset import ResultSet
 from boto.iam.summarymap import SummaryMap
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 
 DEFAULT_POLICY_DOCUMENTS = {
     'default': {

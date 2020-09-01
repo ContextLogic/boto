@@ -21,7 +21,7 @@
 #
 from boto.compat import json
 from boto.exception import JSONResponseError
-from boto.connection import AWSAuthConnection
+from boto.aws_connection import AWSAuthConnection
 from boto.regioninfo import RegionInfo
 from boto.cloudsearchdomain import exceptions
 

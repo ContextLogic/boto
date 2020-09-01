@@ -466,6 +466,12 @@ class InvalidAclError(Exception):
         super(InvalidAclError, self).__init__(message)
         self.message = message
 
+class InvalidConfigError(Exception):
+    """Exception raised when the configuration to get credentials is invalid"""
+
+    def __init__(self, message):
+        super(InvalidConfigError,self).__init__(message)
+        self.message=message
 
 class InvalidCorsError(Exception):
     """Exception raised when CORS XML is invalid."""
@@ -570,4 +576,22 @@ class PleaseRetryException(Exception):
         return 'PleaseRetryException("%s", %s)' % (
             self.message,
             self.response
+        )
+
+class CredentialRetrievalError(Exception):
+    """
+    Error attempting to retrieve credentials from a remote source.
+
+    :ivar provider: The name of the credential provider.
+    :ivar error_msg: The msg explaining why credentials could not be
+        retrieved.
+
+    """
+    def __init__(self,provider, message):
+        self.message = message
+        self.provider = provider
+    def __repr__(self):
+        return 'Error when retrieving credentials from %s: %s' % (
+            self.provider,
+            self.message
         )

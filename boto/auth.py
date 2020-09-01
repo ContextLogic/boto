@@ -32,6 +32,7 @@ import boto.auth_handler
 import boto.exception
 import boto.plugin
 import boto.utils
+import boto.provider_util
 import copy
 import datetime
 from email.utils import formatdate
@@ -65,6 +66,7 @@ class HmacKeys(object):
     """Key based Auth handler helper."""
 
     def __init__(self, host, config, provider):
+
         if provider.access_key is None or provider.secret_key is None:
             raise boto.auth_handler.NotReadyToAuthenticate()
         self.host = host
@@ -72,6 +74,7 @@ class HmacKeys(object):
 
     def update_provider(self, provider):
         self._provider = provider
+
         self._hmac = hmac.new(self._provider.secret_key.encode('utf-8'),
                               digestmod=sha)
         if sha256:
@@ -148,7 +151,7 @@ class HmacAuthV1Handler(AuthHandler, HmacKeys):
         if self._provider.security_token:
             key = self._provider.security_token_header
             headers[key] = self._provider.security_token
-        string_to_sign = boto.utils.canonical_string(method, auth_path,
+        string_to_sign = boto.provider_util.canonical_string(method, auth_path,
                                                      headers, None,
                                                      self._provider)
         boto.log.debug('StringToSign:\n%s' % string_to_sign)

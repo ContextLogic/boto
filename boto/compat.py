@@ -61,7 +61,15 @@ if six.PY3:
     StandardError = Exception
     long_type = int
     from configparser import ConfigParser
+    def ensure_unicode(s, encoding='utf-8', errors='strict'):
+        #NOOP in python 3 because every string is already unicode
+        return s
 else:
     StandardError = StandardError
     long_type = long
     from ConfigParser import SafeConfigParser as ConfigParser
+
+    def ensure_unicode(s, encoding='utf-8', errors='strict'):
+        if isinstance(s, six.text_type):
+            return s
+        return unicode(s, encoding, errors)

@@ -55,6 +55,7 @@ class TestECSConnection(AWSMockServiceTestCase):
             ResponseGroup='Reviews'
         )
 
+        print self.actual_request.params.copy()
         self.assert_request_parameters(
             {'ItemId': '0316067938',
              'Operation': 'ItemLookup',
@@ -62,7 +63,7 @@ class TestECSConnection(AWSMockServiceTestCase):
              'Service': 'AWSECommerceService'},
             ignore_params_values=['Version', 'AWSAccessKeyId',
                                   'SignatureMethod', 'SignatureVersion',
-                                  'Timestamp'])
+                                  'Timestamp', 'SecurityToken'])
 
         items = list(item_set)
         self.assertEqual(len(items), 1)

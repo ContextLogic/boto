@@ -32,7 +32,7 @@ from datetime import timedelta
 
 import boto
 from boto.auth import detect_potential_sigv4
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.resultset import ResultSet
 from boto.ec2.image import Image, ImageAttribute, CopyImage
 from boto.ec2.instance import Reservation, Instance
