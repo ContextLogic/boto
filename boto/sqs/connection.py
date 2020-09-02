@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 
 import boto
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.sqs.regioninfo import SQSRegionInfo
 from boto.sqs.queue import Queue
 from boto.sqs.message import Message

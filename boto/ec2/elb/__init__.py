@@ -25,7 +25,7 @@
 This module provides an interface to the Elastic Compute Cloud (EC2)
 load balancing service from AWS.
 """
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.ec2.instanceinfo import InstanceInfo
 from boto.ec2.elb.loadbalancer import LoadBalancer, LoadBalancerZones
 from boto.ec2.elb.instancestate import InstanceState

@@ -22,7 +22,7 @@ import xml.sax
 import hashlib
 import string
 import collections
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.exception import BotoServerError
 import boto.mws.exception
 import boto.mws.response

@@ -30,7 +30,7 @@ Auto Scaling service.
 import base64
 
 import boto
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.regioninfo import RegionInfo, get_regions, load_regions
 from boto.ec2.autoscale.request import Request
 from boto.ec2.autoscale.launchconfig import LaunchConfiguration

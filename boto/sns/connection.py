@@ -23,7 +23,7 @@
 import uuid
 import hashlib
 
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.regioninfo import RegionInfo
 from boto.compat import json
 import boto

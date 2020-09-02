@@ -29,7 +29,8 @@ import time
 
 from boto.auth import detect_potential_s3sigv4
 import boto.utils
-from boto.connection import AWSAuthConnection
+import boto.provider_util
+from boto.aws_connection import AWSAuthConnection
 from boto import handler
 from boto.s3.bucket import Bucket
 from boto.s3.key import Key
@@ -403,7 +404,7 @@ class S3Connection(AWSAuthConnection):
         if extra_qp:
             delimiter = '?' if '?' not in auth_path else '&'
             auth_path += delimiter + '&'.join(extra_qp)
-        c_string = boto.utils.canonical_string(method, auth_path, headers,
+        c_string = boto.provider_util.canonical_string(method, auth_path, headers,
                                                expires, self.provider)
         b64_hmac = self._auth_handler.sign_string(c_string)
         encoded_canonical = urllib.parse.quote(b64_hmac, safe='')

@@ -22,7 +22,7 @@
 
 import boto
 from boto.compat import json
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.regioninfo import RegionInfo
 from boto.exception import JSONResponseError
 from boto.cognito.identity import exceptions

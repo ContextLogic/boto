@@ -30,7 +30,7 @@ import uuid
 import xml.sax
 
 import boto
-from boto.connection import AWSAuthConnection
+from boto.aws_connection import AWSAuthConnection
 from boto import handler
 import boto.jsonresponse
 from boto.route53.record import ResourceRecordSets
