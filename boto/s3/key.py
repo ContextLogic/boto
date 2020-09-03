@@ -303,7 +303,7 @@ class Key(object):
                 raise provider.storage_response_error(self.resp.status,
                                                       self.resp.reason, body)
             response_headers = self.resp.msg
-            self.metadata = boto.provider_utils.get_aws_metadata(response_headers,
+            self.metadata = boto.provider_util.get_aws_metadata(response_headers,
                                                         provider)
             for name, value in response_headers.items():
                 # To get correct size for Range GETs, use Content-Range
