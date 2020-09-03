@@ -35,7 +35,7 @@ from boto.emr.emrobject import AddInstanceGroupsResponse, BootstrapActionList, \
                                ModifyInstanceGroupsResponse, \
                                RunJobFlowResponse, StepSummaryList
 from boto.emr.step import JarStep
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.exception import EmrResponseError
 from boto.compat import six
 

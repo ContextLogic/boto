@@ -28,7 +28,8 @@ import unittest
 import os
 from boto.exception import BotoServerError
 from boto.sts.connection import STSConnection
-from boto.sts.credentials import Credentials
+from boto.anon_connection import AnonSTSConnection
+from boto.credentials import Credentials
 from boto.s3.connection import S3Connection
 
 
@@ -66,7 +67,7 @@ class SessionTokenTest(unittest.TestCase):
         print('--- tests completed ---')
 
     def test_assume_role_with_web_identity(self):
-        c = STSConnection(anon=True)
+        c = AnonSTSConnection()
         arn = 'arn:aws:iam::000240903217:role/FederatedWebIdentityRole'
         wit = 'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9'
 

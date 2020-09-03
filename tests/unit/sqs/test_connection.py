@@ -30,7 +30,7 @@ from boto.sqs.connection import SQSConnection
 from boto.sqs.regioninfo import SQSRegionInfo
 from boto.sqs.message import RawMessage
 from boto.sqs.queue import Queue
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 
 from nose.plugins.attrib import attr
 

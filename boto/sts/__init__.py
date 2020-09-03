@@ -32,6 +32,7 @@ def regions():
     :return: A list of :class:`boto.regioninfo.RegionInfo` instances
     """
     return get_regions('sts', connection_cls=STSConnection)
+    pass
 
 
 def connect_to_region(region_name, **kw_params):

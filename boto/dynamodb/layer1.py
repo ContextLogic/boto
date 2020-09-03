@@ -24,7 +24,7 @@ import time
 from binascii import crc32
 
 import boto
-from boto.connection import AWSAuthConnection
+from boto.aws_connection import AWSAuthConnection
 from boto.exception import DynamoDBResponseError
 from boto.provider import Provider
 from boto.dynamodb import exceptions as dynamodb_exceptions

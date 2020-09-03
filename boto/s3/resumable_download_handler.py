@@ -26,7 +26,7 @@ import socket
 import time
 import boto
 from boto import config, storage_uri_for_key
-from boto.connection import AWSAuthConnection
+from boto.aws_connection import AWSAuthConnection
 from boto.exception import ResumableDownloadException
 from boto.exception import ResumableTransferDisposition
 from boto.s3.keyfile import KeyFile

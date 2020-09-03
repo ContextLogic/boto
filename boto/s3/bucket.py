@@ -43,6 +43,7 @@ from boto.s3.bucketlogging import BucketLogging
 from boto.s3 import website
 import boto.jsonresponse
 import boto.utils
+import boto.provider_util
 import xml.sax
 import xml.sax.saxutils
 import re
@@ -203,7 +204,7 @@ class Bucket(object):
         if response.status / 100 == 2:
             k = self.key_class(self)
             provider = self.connection.provider
-            k.metadata = boto.utils.get_aws_metadata(response.msg, provider)
+            k.metadata = boto.provider_util.get_aws_metadata(response.msg, provider)
             for field in Key.base_fields:
                 k.__dict__[field.lower().replace('-', '_')] = \
                     response.getheader(field)
@@ -863,7 +864,7 @@ class Bucket(object):
             headers[provider.storage_class_header] = storage_class
         if metadata is not None:
             headers[provider.metadata_directive_header] = 'REPLACE'
-            headers = boto.utils.merge_meta(headers, metadata, provider)
+            headers = boto.provider_util.merge_meta(headers, metadata, provider)
         elif not query_args:  # Can't use this header with multi-part copy.
             headers[provider.metadata_directive_header] = 'COPY'
         response = self.connection.make_request('PUT', self.name, new_key_name,
@@ -1746,7 +1747,7 @@ class Bucket(object):
         if metadata is None:
             metadata = {}
 
-        headers = boto.utils.merge_meta(headers, metadata,
+        headers = boto.provider_util.merge_meta(headers, metadata,
                 self.connection.provider)
         response = self.connection.make_request('POST', self.name, key_name,
                                                 query_args=query_args,

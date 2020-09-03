@@ -22,7 +22,7 @@ import xml.sax
 import threading
 import boto
 from boto import handler
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.sdb.domain import Domain, DomainMetaData
 from boto.sdb.item import Item
 from boto.sdb.regioninfo import SDBRegionInfo

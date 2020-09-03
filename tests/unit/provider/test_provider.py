@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 
 from tests.compat import mock, unittest
 import os
-
 from boto import provider
+from boto import credential_provider
 from boto.compat import expanduser
 
 
@@ -33,9 +33,9 @@ class TestProvider(unittest.TestCase):
         self.has_config_patch = mock.patch('boto.provider.config.has_option',
                                            self.has_config)
         self.config_object_patch = mock.patch.object(
-            provider.Config, 'get', self.get_shared_config)
+            credential_provider.Config, 'get', self.get_shared_config)
         self.has_config_object_patch = mock.patch.object(
-            provider.Config, 'has_option', self.has_shared_config)
+            credential_provider.Config, 'has_option', self.has_shared_config)
         self.environ_patch = mock.patch('os.environ', self.environ)
 
         self.get_instance_metadata = self.metadata_patch.start()
@@ -82,7 +82,7 @@ class TestProvider(unittest.TestCase):
             return None
 
     def test_passed_in_values_are_used(self):
-        p = provider.Provider('aws', 'access_key', 'secret_key', 'security_token')
+        p = credential_provider.CredentialProvider('aws', 'access_key', 'secret_key', 'security_token')
         self.assertEqual(p.access_key, 'access_key')
         self.assertEqual(p.secret_key, 'secret_key')
         self.assertEqual(p.security_token, 'security_token')
@@ -90,7 +90,7 @@ class TestProvider(unittest.TestCase):
     def test_environment_variables_are_used(self):
         self.environ['AWS_ACCESS_KEY_ID'] = 'env_access_key'
         self.environ['AWS_SECRET_ACCESS_KEY'] = 'env_secret_key'
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'env_access_key')
         self.assertEqual(p.secret_key, 'env_secret_key')
         self.assertIsNone(p.security_token)
@@ -99,13 +99,13 @@ class TestProvider(unittest.TestCase):
         self.environ['AWS_ACCESS_KEY_ID'] = 'env_access_key'
         self.environ['AWS_SECRET_ACCESS_KEY'] = 'env_secret_key'
         self.environ['AWS_SECURITY_TOKEN'] = 'env_security_token'
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'env_access_key')
         self.assertEqual(p.secret_key, 'env_secret_key')
         self.assertEqual(p.security_token, 'env_security_token')
 
     def test_no_credentials_provided(self):
-        p = provider.Provider(
+        p = credential_provider.CredentialProvider(
             'aws',
             provider.NO_CREDENTIALS_PROVIDED,
             provider.NO_CREDENTIALS_PROVIDED,
@@ -132,14 +132,14 @@ class TestProvider(unittest.TestCase):
                 'aws_secret_access_key': 'default_secret_key'
             }
         }
-        p = provider.Provider('aws', profile_name='prod')
+        p = credential_provider.CredentialProvider('aws', profile_name='prod')
         self.assertEqual(p.access_key, 'prod_access_key')
         self.assertEqual(p.secret_key, 'prod_secret_key')
-        p = provider.Provider('aws', profile_name='prod_withtoken')
+        p = credential_provider.CredentialProvider('aws', profile_name='prod_withtoken')
         self.assertEqual(p.access_key, 'prod_access_key')
         self.assertEqual(p.secret_key, 'prod_secret_key')
         self.assertEqual(p.security_token, 'prod_token')
-        q = provider.Provider('aws', profile_name='dev')
+        q = credential_provider.CredentialProvider('aws', profile_name='dev')
         self.assertEqual(q.access_key, 'dev_access_key')
         self.assertEqual(q.secret_key, 'dev_secret_key')
 
@@ -158,7 +158,7 @@ class TestProvider(unittest.TestCase):
             }
         }
         with self.assertRaises(provider.ProfileNotFoundError):
-            provider.Provider('aws', profile_name='doesntexist')
+            credential_provider.CredentialProvider('aws', profile_name='doesntexist')
 
     def test_config_values_are_used(self):
         self.config = {
@@ -167,7 +167,7 @@ class TestProvider(unittest.TestCase):
                 'aws_secret_access_key': 'cfg_secret_key',
             }
         }
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'cfg_access_key')
         self.assertEqual(p.secret_key, 'cfg_secret_key')
         self.assertIsNone(p.security_token)
@@ -180,7 +180,7 @@ class TestProvider(unittest.TestCase):
                 'aws_security_token': 'cfg_security_token',
             }
         }
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'cfg_access_key')
         self.assertEqual(p.secret_key, 'cfg_secret_key')
         self.assertEqual(p.security_token, 'cfg_security_token')
@@ -204,7 +204,7 @@ class TestProvider(unittest.TestCase):
             with mock.patch('keyring.get_password', create=True):
                 keyring.get_password.side_effect = (
                     lambda kr, login: kr+login+'pw')
-                p = provider.Provider('aws')
+                p = credential_provider.CredentialProvider('aws')
                 self.assertEqual(p.access_key, 'cfg_access_key')
                 self.assertEqual(p.secret_key, 'testcfg_access_keypw')
                 self.assertIsNone(p.security_token)
@@ -216,7 +216,7 @@ class TestProvider(unittest.TestCase):
         self.environ['AWS_ACCESS_KEY_ID'] = 'env_access_key'
         self.environ['AWS_SECRET_ACCESS_KEY'] = 'env_secret_key'
         self.environ['AWS_SECURITY_TOKEN'] = 'env_security_token'
-        p = provider.Provider('aws', 'access_key', 'secret_key')
+        p = credential_provider.CredentialProvider('aws', 'access_key', 'secret_key')
         self.assertEqual(p.access_key, 'access_key')
         self.assertEqual(p.secret_key, 'secret_key')
         self.assertEqual(p.security_token, None)
@@ -230,7 +230,7 @@ class TestProvider(unittest.TestCase):
                 'aws_secret_access_key': 'shared_secret_key',
             }
         }
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'env_access_key')
         self.assertEqual(p.secret_key, 'env_secret_key')
         self.assertIsNone(p.security_token)
@@ -248,7 +248,7 @@ class TestProvider(unittest.TestCase):
                 'aws_secret_access_key': 'cfg_secret_key',
             }
         }
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'shared_access_key')
         self.assertEqual(p.secret_key, 'shared_secret_key')
         self.assertIsNone(p.security_token)
@@ -264,7 +264,7 @@ class TestProvider(unittest.TestCase):
                 'aws_secret_access_key': 'foo_secret_key',
             }
         }
-        p = provider.Provider('aws', profile_name='foo')
+        p = credential_provider.CredentialProvider('aws', profile_name='foo')
         self.assertEqual(p.access_key, 'foo_access_key')
         self.assertEqual(p.secret_key, 'foo_secret_key')
         self.assertIsNone(p.security_token)
@@ -291,13 +291,13 @@ class TestProvider(unittest.TestCase):
                 'aws_secret_access_key': 'cfg_secret_key',
             }
         }
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'shared_access_key_foo')
         self.assertEqual(p.secret_key, 'shared_secret_key_foo')
         self.assertIsNone(p.security_token)
 
         self.shared_config = {}
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'cfg_access_key_foo')
         self.assertEqual(p.secret_key, 'cfg_secret_key_foo')
         self.assertIsNone(p.security_token)
@@ -320,22 +320,22 @@ class TestProvider(unittest.TestCase):
                 'aws_security_token': 'cfg_security_token',
             }
         }
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'env_access_key')
         self.assertEqual(p.secret_key, 'env_secret_key')
         self.assertEqual(p.security_token, 'env_security_token')
 
         self.environ.clear()
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.security_token, 'shared_security_token')
 
         self.shared_config.clear()
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.security_token, 'cfg_security_token')
 
     def test_metadata_server_credentials(self):
         self.get_instance_metadata.return_value = INSTANCE_CONFIG
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'iam_access_key')
         self.assertEqual(p.secret_key, 'iam_secret_key')
         self.assertEqual(p.security_token, 'iam_token')
@@ -358,7 +358,7 @@ class TestProvider(unittest.TestCase):
         }
         instance_config = {'allowall': credentials}
         self.get_instance_metadata.return_value = instance_config
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'first_access_key')
         self.assertEqual(p.secret_key, 'first_secret_key')
         self.assertEqual(p.security_token, 'first_token')
@@ -383,7 +383,7 @@ class TestProvider(unittest.TestCase):
         config_int.return_value = 10
         config_float.return_value = 4.0
         self.get_instance_metadata.return_value = INSTANCE_CONFIG
-        p = provider.Provider('aws')
+        p = credential_provider.CredentialProvider('aws')
         self.assertEqual(p.access_key, 'iam_access_key')
         self.assertEqual(p.secret_key, 'iam_secret_key')
         self.assertEqual(p.security_token, 'iam_token')
@@ -406,24 +406,24 @@ class TestProvider(unittest.TestCase):
                 'gs_secret_access_key': 'cfg_secret_key',
             }
         }
-        p = provider.Provider('google')
+        p = credential_provider.CredentialProvider('google')
         self.assertEqual(p.access_key, 'env_access_key')
         self.assertEqual(p.secret_key, 'env_secret_key')
 
         self.environ.clear()
-        p = provider.Provider('google')
+        p = credential_provider.CredentialProvider('google')
         self.assertEqual(p.access_key, 'shared_access_key')
         self.assertEqual(p.secret_key, 'shared_secret_key')
 
         self.shared_config.clear()
-        p = provider.Provider('google')
+        p = credential_provider.CredentialProvider('google')
         self.assertEqual(p.access_key, 'cfg_access_key')
         self.assertEqual(p.secret_key, 'cfg_secret_key')
 
     @mock.patch('os.path.isfile', return_value=True)
-    @mock.patch.object(provider.Config, 'load_from_path')
+    @mock.patch.object(credential_provider.Config, 'load_from_path')
     def test_shared_config_loading(self, load_from_path, exists):
-        provider.Provider('aws')
+        credential_provider.CredentialProvider('aws')
         path = os.path.join(expanduser('~'), '.aws', 'credentials')
         exists.assert_called_once_with(path)
         load_from_path.assert_called_once_with(path)
@@ -431,7 +431,7 @@ class TestProvider(unittest.TestCase):
         exists.reset_mock()
         load_from_path.reset_mock()
 
-        provider.Provider('google')
+        credential_provider.CredentialProvider('google')
         path = os.path.join(expanduser('~'), '.google', 'credentials')
         exists.assert_called_once_with(path)
         load_from_path.assert_called_once_with(path)

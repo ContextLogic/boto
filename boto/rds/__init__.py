@@ -21,7 +21,7 @@
 #
 
 import urllib
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.rds.dbinstance import DBInstance
 from boto.rds.dbsecuritygroup import DBSecurityGroup
 from boto.rds.optiongroup  import OptionGroup, OptionGroupOption

@@ -27,7 +27,8 @@ from httpretty import HTTPretty
 
 from boto import UserAgent
 from boto.compat import json, parse_qs
-from boto.connection import AWSQueryConnection, AWSAuthConnection, HTTPRequest
+from boto.aws_connection import AWSQueryConnection, AWSAuthConnection
+from boto.connection import HTTPRequest
 from boto.exception import BotoServerError
 from boto.regioninfo import RegionInfo
 

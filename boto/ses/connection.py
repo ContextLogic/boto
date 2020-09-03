@@ -23,7 +23,7 @@ import re
 import base64
 
 from boto.compat import six, urllib
-from boto.connection import AWSAuthConnection
+from boto.aws_connection import AWSAuthConnection
 from boto.exception import BotoServerError
 from boto.regioninfo import RegionInfo
 import boto

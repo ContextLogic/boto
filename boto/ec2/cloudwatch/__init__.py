@@ -24,7 +24,7 @@ This module provides an interface to the Elastic Compute Cloud (EC2)
 CloudWatch service from AWS.
 """
 from boto.compat import json, map, six, zip
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 from boto.ec2.cloudwatch.metric import Metric
 from boto.ec2.cloudwatch.alarm import MetricAlarm, MetricAlarms, AlarmHistoryItem
 from boto.ec2.cloudwatch.datapoint import Datapoint

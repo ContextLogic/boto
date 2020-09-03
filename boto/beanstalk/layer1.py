@@ -26,7 +26,7 @@ import boto
 import boto.jsonresponse
 from boto.compat import json
 from boto.regioninfo import RegionInfo
-from boto.connection import AWSQueryConnection
+from boto.aws_connection import AWSQueryConnection
 
 
 class Layer1(AWSQueryConnection):
