@@ -168,10 +168,13 @@ class AWSQueryConnection(AWSAuthConnection):
             boto.log.error('%s' % body)
             raise self.ResponseError(response.status, response.reason, body)
 
-    def get_status(self, action, params, path='/', parent=None, verb='GET'):
+    def get_status(self, action, params, path='/', parent=None, verb='GET',
+                   override_num_retries=None, override_timeout=None):
         if not parent:
             parent = self
-        response = self.make_request(action, params, path, verb)
+        response = self.make_request(action, params, path, verb,
+            override_num_retries=override_num_retries,
+            override_timeout=override_timeout)
         body = response.read()
         boto.log.debug(body)
         if not body:
