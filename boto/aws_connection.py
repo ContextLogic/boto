@@ -191,26 +191,28 @@ class AWSQueryConnection(AWSAuthConnection):
             raise self.ResponseError(response.status, response.reason, body)
 
     def make_request(self, action, params=None, path='/', verb='GET',
-            override_timeout=None, override_num_retries=None):
-        http_request = self.build_base_http_request(
-            verb, path, None,
-            params, {}, '',
-            self.host)
+            override_num_retries=None, override_timeout=None, async_timeout=None):
+        http_request = self.build_base_http_request(verb, path, None,
+                                                    params, {}, '',
+                                                    self.host)
         if action:
             http_request.params['Action'] = action
         if self.APIVersion:
             http_request.params['Version'] = self.APIVersion
-        return self._mexe(http_request, override_timeout=override_timeout,
-            override_num_retries=override_num_retries)
+        return self._mexe(http_request,
+            override_num_retries=override_num_retries,
+            override_timeout=override_timeout,
+            async_timeout=async_timeout)
 
     def get_object(self, action, params, cls, path='/',
-                   parent=None, verb='GET', override_timeout=None,
-                   override_num_retries=None):
+                   parent=None, verb='GET',override_num_retries=None,
+                   override_timeout=None, async_timeout=None):
         if not parent:
             parent = self
         response = self.make_request(action, params, path, verb,
+            override_num_retries=override_num_retries,
             override_timeout=override_timeout,
-            override_num_retries=override_num_retries)
+            async_timeout=async_timeout)
         body = response.read()
         boto.log.debug(body)
         if not body:
