@@ -734,6 +734,10 @@ class AssumeRoleWithWebIdentityProvider(object):
             return env_value
         return self._get_profile_config(key)
 
+    def _get_role_name(self):
+        if 'HOSTNAME' in os.environ:
+            return os.environ['HOSTNAME']
+        return self._get_config('role_session_name')
 
     def _assume_role_with_web_identity(self):
         token_path = self._get_config('web_identity_token_file')
@@ -752,7 +756,7 @@ class AssumeRoleWithWebIdentityProvider(object):
             raise InvalidConfigError(message=error_msg)
 
         extra_args = {}
-        role_session_name = self._get_config('role_session_name')
+        role_session_name = self._get_role_name()
         if role_session_name is not None:
             extra_args['RoleSessionName'] = role_session_name
 
